@@ -2,6 +2,7 @@ const express = require('express');
 // const puppeteer = require('puppeteer');
 const request = require('request');
 const app = express();
+require('dotenv').config();
 
 app.use(async (req, res) => {
   postSlack("test");
