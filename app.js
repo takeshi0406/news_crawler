@@ -1,7 +1,7 @@
-const express = require('express');
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
-const app = express();
+const UrlUtils = require('./lib/urlutils')
+
 require('dotenv').config();
 
 
@@ -16,12 +16,16 @@ const main = () => {
 
   twclient.getNewsUrls("takeshi0406", "fudosan", 100).
     then((urls) => {
-      console.log(urls);
-      return;
-      return cwclient.getPostedUrls().then((response) => {
-        console.log(response);
-        // return cwclient.postMessages(response[0]["body"]);
+      return cwclient.getPostedUrls().then((known_urls) => {
+        let news_urls = new Set();
+        urls.forEach((url) => {
+          const uniq_url = UrlUtils.removeUtmParams(url);
+          if (!known_urls.has(uniq_url)) news_urls.add(uniq_url);
+        });
+        return news_urls;
       })
+    }).then((news_urls) => {
+      console.log(news_urls);
     }).catch((error) => {
       // console.log("error");
       // console.log(error);
