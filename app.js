@@ -22,7 +22,7 @@ const crawl = async () => {
   );
   const cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
   const news_urls = intersept(
-    await twclient.getNewsUrls("takeshi0406", "fudosan", 10),
+    await twclient.getNewsUrls("takeshi0406", "fudosan", 100),
     await cwclient.getPostedUrls()
   );
   const results = await Crawler.crawlAllPages(Array.from(news_urls));
