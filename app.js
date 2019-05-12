@@ -1,5 +1,5 @@
 const express = require('express');
-const ChatWorkClient = require('./lib/chatwork');
+const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const app = express();
 require('dotenv').config();
@@ -12,19 +12,18 @@ const main = () => {
     process.env.TWITTER_TOKEN,
     process.env.TWITTER_TOKEN_SECRET
   );
-  const cwclient = new ChatWorkClient(process.env.CHATWORK_TOKEN);
+  const cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
 
   twclient.getNewsUrls("takeshi0406", "fudosan", 100).
     then((tweet) => {
-      return cwclient.getMessages(31958529).then((response) => {
-        console.log(response);
-        return cwclient.postMessages(31958529, response[0]["body"]);
+      return cwclient.getPostedUrls().then((response) => {
+        // console.log(response);
+        // return cwclient.postMessages(response[0]["body"]);
       })
-    }).then((response) => {
-      console.log(response);
     }).catch((error) => {
-      console.log("error");
-      console.log(error);
+      // console.log("error");
+      // console.log(error);
+      throw error;
     })
 }
 
