@@ -1,11 +1,19 @@
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const UrlUtils = require('./lib/urlutils')
+const Crawler = require('./lib/crawler')
 
 require('dotenv').config();
 
 
 const main = () => {
+
+  crawl().catch((error) => {
+    throw error;
+  })
+}
+
+const crawl = async () => {
   const twclient = new TwitterClient(
     process.env.TWITTER_CONSUMER_KEY,
     process.env.TWITTER_CONSUMER_SECRET,
@@ -13,24 +21,21 @@ const main = () => {
     process.env.TWITTER_TOKEN_SECRET
   );
   const cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
+  const news_urls = intersept(
+    await twclient.getNewsUrls("takeshi0406", "fudosan", 10),
+    await cwclient.getPostedUrls()
+  );
+  const results = await Crawler.crawlAllPages(Array.from(news_urls));
+  console.log(results);
+}
 
-  twclient.getNewsUrls("takeshi0406", "fudosan", 100).
-    then((urls) => {
-      return cwclient.getPostedUrls().then((known_urls) => {
-        let news_urls = new Set();
-        urls.forEach((url) => {
-          const uniq_url = UrlUtils.removeUtmParams(url);
-          if (!known_urls.has(uniq_url)) news_urls.add(uniq_url);
-        });
-        return news_urls;
-      })
-    }).then((news_urls) => {
-      console.log(news_urls);
-    }).catch((error) => {
-      // console.log("error");
-      // console.log(error);
-      throw error;
-    })
+const intersept = (news_urls, known_urls) => {
+  let result = new Set();
+  news_urls.forEach((url) => {
+    const uniq_url = UrlUtils.removeUtmParams(url);
+    if (!known_urls.has(uniq_url)) result.add(uniq_url);
+  });
+  return result;
 }
 
 
