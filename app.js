@@ -11,8 +11,18 @@ const main = () => {
     process.env.TWITTER_CONSUMER_SECRET,
     process.env.TWITTER_TOKEN,
     process.env.TWITTER_TOKEN_SECRET
-  )
-  console.log(twclient.getNewsUrls("takeshi0406", "fudosan", 100));
+  );
+  const cwclient = new ChatWorkClient(process.env.CHATWORK_TOKEN);
+
+  twclient.getNewsUrls("takeshi0406", "fudosan", 100).
+    then((tweet) => {
+      console.log(tweet);
+      return cwclient.postMessages(31958529, "ok");
+    }).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.log(error);
+    })
 }
 
 
