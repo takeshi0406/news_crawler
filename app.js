@@ -15,9 +15,11 @@ const main = () => {
   const cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
 
   twclient.getNewsUrls("takeshi0406", "fudosan", 100).
-    then((tweet) => {
+    then((urls) => {
+      console.log(urls);
+      return;
       return cwclient.getPostedUrls().then((response) => {
-        // console.log(response);
+        console.log(response);
         // return cwclient.postMessages(response[0]["body"]);
       })
     }).catch((error) => {
