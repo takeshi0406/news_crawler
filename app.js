@@ -16,11 +16,14 @@ const main = () => {
 
   twclient.getNewsUrls("takeshi0406", "fudosan", 100).
     then((tweet) => {
-      console.log(tweet);
-      return cwclient.postMessages(31958529, "ok");
+      return cwclient.getMessages(31958529).then((response) => {
+        console.log(response);
+        return cwclient.postMessages(31958529, response[0]["body"]);
+      })
     }).then((response) => {
       console.log(response);
     }).catch((error) => {
+      console.log("error");
       console.log(error);
     })
 }
