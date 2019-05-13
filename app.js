@@ -22,10 +22,10 @@ const crawl = async () => {
     const cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
 
     const known_urls = await cwclient.getPostedUrls();
-    const news_urls = intersept(
-        await twclient.getNewsUrls("takeshi0406", "fudosan", 20),
-        known_urls
-    );
+    const news = await twclient.getNews("takeshi0406", "fudosan", 20);
+    const news_urls = news.filter((x) => {
+        return !known_urls.has(x.url);
+    }).map(x => x.url);
     const results = await Crawler.crawlAllPages(Array.from(news_urls));
     console.log(results.filter((res) => {
         return !known_urls.has(res.redirected_url);
