@@ -32,14 +32,4 @@ const crawl = async () => {
     }));
 }
 
-const intersept = (news_urls, known_urls) => {
-    let result = new Set();
-    news_urls.forEach((url) => {
-        const uniq_url = UrlUtils.removeUtmParams(url);
-        if (!known_urls.has(uniq_url)) result.add(uniq_url);
-    });
-    return result;
-}
-
-
 main();
