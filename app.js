@@ -26,16 +26,18 @@ const async_main = async () => {
     });
     const results = await crawl(news);
     
-    console.log(results.filter((res) => {
+    const latest_news = results.filter((res) => {
         return !known_urls.has(res.page.redirected_url);
-    }));
+    });
+
+    await cwclient.postMessages(buildMessage(latest_news));
 }
 
 
 const crawl = async (news) => {
     const pages = await Crawler.crawlAllPages(news.map(x => x.url));
     const results = news.map((x, i) => {
-        return new Result(x, pages[i]);
+        return new LatestNewsResult(x, pages[i]);
     });
     const grouped = results.reduce((acc, x) => {
         const y = acc.get(x.page.redirected_url);
@@ -46,7 +48,18 @@ const crawl = async (news) => {
     return Array.from(grouped.values());
 }
 
-class Result {
+const buildMessage = (latest_news) => {
+    const body = latest_news.sort((x, y) => x.news.popularity < y.news.popularity).
+        map(x => {
+            const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
+            return `${stars}\n${x.page.title}\n${x.page.redirected_url}`;
+        }).
+        join("\n\n");
+    return `[info][title]"タイトルです"[/title]${body}[/info]`
+}
+
+
+class LatestNewsResult {
     constructor(news, page) {
         this.news = news;
         this.page = page;
