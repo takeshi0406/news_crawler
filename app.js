@@ -21,8 +21,8 @@ const async_main = async () => {
     const cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
 
     const known_urls = await cwclient.getPostedUrls();
-    const news = (await twclient.getNews("takeshi0406", "fudosan", 20)).filter((x) => {
-        return !known_urls.has(x.url);
+    const news = (await twclient.getNews("takeshi0406", "fudosan", 100)).filter((x) => {
+        return x.popularity >= 1 && !known_urls.has(x.url);
     });
     const results = await crawl(news);
     
