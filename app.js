@@ -52,7 +52,6 @@ const buildMessage = (latest_news) => {
     const body = latest_news.sort((x, y) => {
         return y.news.popularity - x.news.popularity;
     }).map(x => {
-        console.log(x.news.popularity);
         const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
         return `${stars}\n${x.page.title}\n${x.page.redirected_url}`;
     }).join("\n\n");
