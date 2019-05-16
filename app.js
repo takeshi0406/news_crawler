@@ -46,13 +46,15 @@ const crawl = async (news) => {
     const results = news.map((x, i) => {
         return new LatestNewsResult(x, pages[i]);
     });
-    const grouped = results.reduce((acc, x) => {
-        const y = acc.get(x.page.redirected_url);
-        if (!y || x.news.popularity > y.news.popularity)
-            acc.set(x.page.redirected_url, x);
-        return acc;
-    }, new Map());
-    return Array.from(grouped.values());
+    return ["redirected_url", "title"].reduce((acc, key) => {
+        const grouped = acc.reduce((acc, x) => {
+            const y = acc.get(x.page[key]);
+            if (!y || x.news.popularity > y.news.popularity)
+                acc.set(x.page[key], x);
+            return acc;
+        }, new Map());
+        return Array.from(grouped.values());
+    }, results);
 }
 
 const buildMessage = (latest_news) => {
@@ -60,7 +62,7 @@ const buildMessage = (latest_news) => {
         return y.news.popularity - x.news.popularity;
     }).map(x => {
         const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
-        return `${stars}\n${x.page.title}\n${x.page.redirected_url}`;
+        return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${x.page.redirected_url}`;
     }).join("\n\n");
     return `[info][title]"タイトルです"[/title]${body}[/info]`
 }
