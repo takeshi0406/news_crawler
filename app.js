@@ -49,11 +49,12 @@ const crawl = async (news) => {
     return ["redirected_url", "title"].reduce((acc, key) => {
         const grouped = acc.reduce((acc, x) => {
             const y = acc.get(x.page[key]);
-            if (!y || x.news.popularity > y.news.popularity)
+            if (!y || (!x[key] && x.news.popularity > y.news.popularity))
                 acc.set(x.page[key], x);
             return acc;
         }, new Map());
-        return Array.from(grouped.values());
+        const nulls = acc.filter((x) => x[key]);
+        return Array.from(grouped.values()).concat(nulls);
     }, results);
 }
 
