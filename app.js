@@ -6,31 +6,38 @@ require('dotenv').config();
 
 
 const main = () => {
-    async_main().catch((error) => {
+    const main = new MainProcess();
+    main.exec().catch((error) => {
         throw error;
     })
 }
 
-const async_main = async () => {
-    const twclient = new TwitterClient(
-        process.env.TWITTER_CONSUMER_KEY,
-        process.env.TWITTER_CONSUMER_SECRET,
-        process.env.TWITTER_TOKEN,
-        process.env.TWITTER_TOKEN_SECRET
-    );
-    const cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
 
-    const known_urls = await cwclient.getPostedUrls();
-    const news = (await twclient.getNews("takeshi0406", "fudosan", 100)).filter((x) => {
-        return x.popularity >= 1 && !known_urls.has(x.url);
-    });
-    const results = await crawl(news);
+class MainProcess {
+    constructor() {
+        this.twclient = new TwitterClient(
+            process.env.TWITTER_CONSUMER_KEY,
+            process.env.TWITTER_CONSUMER_SECRET,
+            process.env.TWITTER_TOKEN,
+            process.env.TWITTER_TOKEN_SECRET
+        );
+        this.cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
+    }
+
+    async exec() {
+        const known_urls = await this.cwclient.getPostedUrls();
+        const news = (await this.twclient.getNews("takeshi0406", "fudosan", 100)).filter((x) => {
+            return x.popularity >= 1 && !known_urls.has(x.url);
+        });
+        const results = await crawl(news);
+        
+        const latest_news = results.filter((res) => {
+            return !known_urls.has(res.page.redirected_url);
+        });
     
-    const latest_news = results.filter((res) => {
-        return !known_urls.has(res.page.redirected_url);
-    });
+        await this.cwclient.postMessages(buildMessage(latest_news));
 
-    await cwclient.postMessages(buildMessage(latest_news));
+    }
 }
 
 
