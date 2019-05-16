@@ -22,11 +22,14 @@ class MainProcess {
             process.env.TWITTER_TOKEN_SECRET
         );
         this.cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
+        this.title = "本日の不動産ニュース";
+        this.twuser = "takeshi0406";
+        this.slug = "fudosan";
     }
 
     async exec() {
         const known_urls = await this.cwclient.getPostedUrls();
-        const news = (await this.twclient.getNews("takeshi0406", "fudosan", 100)).filter((x) => {
+        const news = (await this.twclient.getNews(this.twuser, this.slug, 500)).filter((x) => {
             return x.popularity >= 1 && !known_urls.has(x.url);
         });
         const results = await crawl(news);
@@ -34,9 +37,21 @@ class MainProcess {
         const latest_news = results.filter((res) => {
             return !known_urls.has(res.page.redirected_url);
         });
-    
-        await this.cwclient.postMessages(buildMessage(latest_news));
+ 
+        await this.cwclient.postMessages(this.buildMessage(latest_news));
+    }
 
+    buildMessage(latest_news) {
+        if (!latest_news.size) {
+            return `[info][title]${this.title}[/title]ニュースがありません[/info]`
+        }
+        const body = latest_news.sort((x, y) => {
+            return y.news.popularity - x.news.popularity;
+        }).map(x => {
+            const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
+            return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${x.page.redirected_url}`;
+        }).join("\n\n");
+        return `[info][title]${this.title}[/title]${body}[/info]`
     }
 }
 
@@ -56,16 +71,6 @@ const crawl = async (news) => {
         const nulls = acc.filter((x) => x[key]);
         return Array.from(grouped.values()).concat(nulls);
     }, results);
-}
-
-const buildMessage = (latest_news) => {
-    const body = latest_news.sort((x, y) => {
-        return y.news.popularity - x.news.popularity;
-    }).map(x => {
-        const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
-        return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${x.page.redirected_url}`;
-    }).join("\n\n");
-    return `[info][title]"タイトルです"[/title]${body}[/info]`
 }
 
 
