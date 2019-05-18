@@ -42,7 +42,7 @@ class MainProcess {
     }
 
     buildMessage(latest_news) {
-        if (!latest_news.size) {
+        if (!latest_news.length) {
             return `[info][title]${this.title}[/title]ニュースがありません[/info]`
         }
         const body = latest_news.sort((x, y) => {

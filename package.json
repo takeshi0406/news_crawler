@@ -16,9 +16,7 @@
   },
   "homepage": "https://github.com/takeshi0406/news_crawler#readme",
   "dependencies": {
-    "apify": "^0.14.5",
     "dotenv": "^8.0.0",
-    "express": "^4.16.4",
     "extract-domain": "^2.0.6",
     "futm": "^1.0.0",
     "pdf-parse": "^1.1.1",
