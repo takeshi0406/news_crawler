@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/takeshi0406/news_crawler#readme",
   "dependencies": {
+    "async-retry": "^1.2.3",
     "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.0.0",
     "extract-domain": "^2.0.6",
