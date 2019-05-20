@@ -24,7 +24,7 @@ class MainProcess {
         this.cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
         this.title = "本日の不動産ニュース";
         this.twuser = "takeshi0406";
-        this.slug = "fudosan";
+        this.slug = "fintech";
     }
 
     async exec() {
