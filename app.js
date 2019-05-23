@@ -1,7 +1,7 @@
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const Crawler = require('./lib/crawler')
-
+const pdf = require('pdf-parse');
 require('dotenv').config();
 
 
@@ -29,7 +29,7 @@ class MainProcess {
 
     async exec() {
         const known_urls = await this.cwclient.getPostedUrls();
-        const news = (await this.twclient.getNews(this.twuser, this.slug, 500)).filter((x) => {
+        const news = (await this.twclient.getNews(this.twuser, this.slug, 50)).filter((x) => {
             return x.popularity >= 1 && !known_urls.has(x.url);
         });
         const results = await crawl(news);
