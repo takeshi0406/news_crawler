@@ -6,7 +6,7 @@ require('dotenv').config();
 
 
 const main = () => {
-    const main = new MainProcess();
+    const main = new MainProcess("本日の不動産ニュース", "takeshi0406/fintech", 31958529);
     main.exec().catch((error) => {
         throw error;
     })
@@ -14,17 +14,16 @@ const main = () => {
 
 
 class MainProcess {
-    constructor() {
+    constructor(title, twlist, chatroom) {
         this.twclient = new TwitterClient(
             process.env.TWITTER_CONSUMER_KEY,
             process.env.TWITTER_CONSUMER_SECRET,
             process.env.TWITTER_TOKEN,
             process.env.TWITTER_TOKEN_SECRET
         );
-        this.cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, 31958529);
-        this.title = "本日の不動産ニュース";
-        this.twuser = "takeshi0406";
-        this.slug = "fintech";
+        this.cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, chatroom);
+        this.title = title;
+        [this.twuser, this.slug] = twlist.split("/");
     }
 
     async exec() {
