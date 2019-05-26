@@ -5,8 +5,14 @@ const pdf = require('pdf-parse');
 require('dotenv').config();
 
 
+exports.newsClawler = (event, callback) => {
+    main();
+    callback();
+}
+
+
 const main = () => {
-    const main = new MainProcess("本日の不動産ニュース", "takeshi0406/fintech", 31958529);
+    const main = new MainProcess("本日のFintechニュース", "takeshi0406/fintech", 31958529);
     main.exec().catch((error) => {
         throw error;
     })
