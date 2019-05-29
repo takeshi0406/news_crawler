@@ -1,8 +1,20 @@
+'use strict';
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const Crawler = require('./lib/crawler')
 const pdf = require('pdf-parse');
 require('dotenv').config();
+
+
+exports.http = (request, response) => {
+  main();
+  response.status(200).send('Hello World!');
+};
+
+
+exports.event = (event, callback) => {
+  callback();
+};
 
 
 exports.newsClawler = (event, callback) => {
