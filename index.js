@@ -1,4 +1,5 @@
 'use strict';
+
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const Crawler = require('./lib/crawler')
