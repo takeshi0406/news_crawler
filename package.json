@@ -1,7 +1,7 @@
 {
   "name": "news_crawler",
   "version": "1.0.0",
-  "description": "",
+  "description": "news_crawler",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
