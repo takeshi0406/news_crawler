@@ -1,5 +1,5 @@
 {
-  "name": "news_crawler",
+  "name": "news-crawler",
   "version": "1.0.0",
   "description": "news_crawler",
   "main": "index.js",
@@ -22,7 +22,6 @@
     "extract-domain": "^2.0.6",
     "futm": "^1.0.0",
     "pdf-parse": "^1.1.1",
-    "puppeteer": "^1.14.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "serverless-google-cloudfunctions": "*",

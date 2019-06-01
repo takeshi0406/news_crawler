@@ -1,4 +1,4 @@
-service: news_crawler # NOTE: Don't put the word "google" in here
+service: news-crawler # NOTE: Don't put the word "google" in here
 
 provider:
   name: google
