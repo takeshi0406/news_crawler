@@ -24,7 +24,7 @@ package:
     - .git/**
 
 functions:
-  first:
+  second:
     handler: http
     events:
       - http: path
