@@ -8,21 +8,16 @@ const TWEET_COUNT = 100;
 require('dotenv').config();
 
 
-exports.http = (request, response) => {
-  main();
-  response.status(200).send('Hello World!');
-};
-
-
-exports.event = (event, callback) => {
-  callback();
-};
-
-
-exports.newsClawler = (event, callback) => {
+/**
+ * Background Cloud Function to be triggered by Pub/Sub.
+ *
+ * @param {object} event The Cloud Functions event.
+ * @param {function} callback The callback function.
+ */
+exports.run = (event, callback) => {
     main();
     callback();
-}
+};
 
 
 const main = () => {
