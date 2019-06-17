@@ -94,5 +94,3 @@ class LatestNewsResult {
         this.page = page;
     }
 }
-
-main();
