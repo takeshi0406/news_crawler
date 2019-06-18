@@ -16,7 +16,6 @@ require('dotenv').config();
  */
 exports.run = (event, callback) => {
     main();
-    callback();
 };
 
 

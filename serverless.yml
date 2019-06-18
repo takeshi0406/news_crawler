@@ -27,4 +27,6 @@ functions:
   cron:
     handler: run
     events:
-      - schedule: cron(0/2 * ? * MON-FRI *)
+      - event:
+          eventType: providers/cloud.pubsub/eventTypes/topic.publish
+          resource: 'projects/takeshi0406-180205/topics/my-topic'
