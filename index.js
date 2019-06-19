@@ -81,8 +81,9 @@ const crawl = async (news) => {
                 acc.set(x.page[key], x);
             return acc;
         }, new Map());
-        const nulls = acc.filter((x) => x[key]);
-        return Array.from(grouped.values()).concat(nulls);
+        const nulls = acc.filter((x) => x[key] == null);
+
+        return Array.from(grouped.values())//.concat(nulls);
     }, results);
 }
 
