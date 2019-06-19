@@ -20,7 +20,7 @@ exports.run = (event, callback) => {
 
 
 const main = () => {
-    const main = new MainProcess("本日のFintechニュース", "takeshi0406/dev", 31958529);
+    const main = new MainProcess("本日のFintechニュース", "takeshi0406/fudosan", 31958529);
     main.exec().catch((error) => {
         throw error;
     })
