@@ -3,8 +3,7 @@
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const Crawler = require('./lib/crawler')
-const pdf = require('pdf-parse');
-const TWEET_COUNT = 100;
+const TWEET_COUNT = 200;
 require('dotenv').config();
 
 
@@ -20,10 +19,10 @@ exports.run = (event, callback) => {
 
 
 const main = () => {
-    const main = new MainProcess("本日のFintechニュース", "takeshi0406/seo", 31958529);
+    const main = new MainProcess("本日のFintechニュース", "takeshi0406/fudosan", 31958529);
     main.exec().catch((error) => {
         throw error;
-    })
+    });
 }
 
 
