@@ -19,7 +19,7 @@ exports.run = (event, callback) => {
 
 
 const main = () => {
-    const main = new MainProcess("本日のFintechニュース", "takeshi0406/fudosan", 31958529);
+    const main = new MainProcess("本日のFintechニュース", "takeshi0406/seo", 31958529);
     main.exec().catch((error) => {
         throw error;
     });
@@ -70,20 +70,24 @@ class MainProcess {
 
 const crawl = async (news) => {
     const pages = await Crawler.crawlAllPages(news.map(x => x.url));
+
+    // in Ruby
+    // results = news.zip(pages);
     const results = news.map((x, i) => {
         return new LatestNewsResult(x, pages[i]);
     });
-    return ["redirected_url", "title"].reduce((acc, key) => {
-        const grouped = acc.reduce((acc, x) => {
-            const y = acc.get(x.page[key]);
-            if (!y || (!x[key] && x.news.popularity > y.news.popularity))
-                acc.set(x.page[key], x);
-            return acc;
-        }, new Map());
-        const nulls = acc.filter((x) => x[key] == null);
 
-        return Array.from(grouped.values())//.concat(nulls);
-    }, results);
+    // in Ruby
+    // return results.group_by { |x| x.pages.redirected_url }.
+    //    map { |_, v| v.max_by { |x| x.news.popularity } }
+    const grouped = results.reduce((acc, x) => {
+        const y = acc.get(x.page.redirected_url);
+        if (!y || x.news.popularity > y.news.popularity)
+            acc.set(x.page.redirected_url, x);
+        return acc;
+    }, new Map());
+
+    return Array.from(grouped.values());
 }
 
 
