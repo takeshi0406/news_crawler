@@ -3,7 +3,7 @@
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const Crawler = require('./lib/crawler')
-const TWEET_COUNT = 200;
+const TWEET_COUNT = 20;
 require('dotenv').config();
 
 
@@ -13,13 +13,17 @@ require('dotenv').config();
  * @param {object} event The Cloud Functions event.
  * @param {function} callback The callback function.
  */
-exports.run = (event, callback) => {
-    main();
+exports.executeNewsCrawler = (event, callback) => {
+    const opt = JSON.parse(Buffer.from(event.data, 'base64').toString());
+    const main = new MainProcess(opt.title, opt.twlist, opt.chatroom);
+    main.exec().catch((error) => {
+        throw error;
+    });
 };
 
 
 const main = () => {
-    const main = new MainProcess("本日のFintechニュース", "takeshi0406/seo", 31958529);
+    const main = new MainProcess("本日のFintechニュース", "takeshi0406/fintech", 31958529);
     main.exec().catch((error) => {
         throw error;
     });
@@ -97,5 +101,3 @@ class LatestNewsResult {
         this.page = page;
     }
 }
-
-main();
