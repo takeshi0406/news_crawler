@@ -1,8 +1,10 @@
 'use strict';
 
 const ChatWorkRoomManager = require('./lib/chatwork');
-const TwitterClient = require('./lib/twitter')
-const Crawler = require('./lib/crawler')
+const TwitterClient = require('./lib/twitter');
+const Crawler = require('./lib/crawler');
+const HatenaBlogClient = require('./lib/posthatena');
+require('date-utils');
 const TWEET_COUNT = 200;
 require('dotenv').config();
 
@@ -19,7 +21,9 @@ exports.executeNewsCrawler = (event, callback) => {
         opt.title,
         opt.twlist,
         opt.chatroom,
-        opt.tweet_count || TWEET_COUNT
+        opt.tweet_count || TWEET_COUNT,
+        opt.blogId,
+        opt.hatenaId
         );
     main.exec().catch((error) => {
         throw error;
@@ -28,7 +32,13 @@ exports.executeNewsCrawler = (event, callback) => {
 
 
 const main = () => {
-    const main = new MainProcess("本日のFintechニュース", "takeshi0406/fintech", 31958529);
+    const main = new MainProcess(
+        "本日のFintechニュース",
+        "takeshi0406/fintech",
+        31958529,
+        TWEET_COUNT,
+        "devs.hatenablog.com",
+        "takeshi0406");
     main.exec().catch((error) => {
         throw error;
     });
@@ -36,7 +46,7 @@ const main = () => {
 
 
 class MainProcess {
-    constructor(title, twlist, chatroom, tweet_count) {
+    constructor(title, twlist, chatroom, tweet_count, blog_id, hatena_id) {
         this.twclient = new TwitterClient(
             process.env.TWITTER_CONSUMER_KEY,
             process.env.TWITTER_CONSUMER_SECRET,
@@ -47,6 +57,15 @@ class MainProcess {
         this.title = title;
         this.tweet_count = tweet_count;
         [this.twuser, this.slug] = twlist.split("/");
+        this.hbclient = new HatenaBlogClient(
+            process.env.HATENA_TOKEN,
+            process.env.HATENA_TOKEN_SECRET,
+            process.env.HATENA_CONSUMER_KEY,
+            process.env.HATENA_CONSUMER_SECRET,
+            blog_id,
+            hatena_id
+        ); // TODO
+        this.today = (new Date()).toFormat("YYYY-MM-DD");
     }
 
     async exec() {
@@ -61,6 +80,7 @@ class MainProcess {
         });
  
         await this.cwclient.postMessages(this.buildMessage(latest_news));
+        await this.hbclient.postNews(`${this.today}の${this.title}`, latest_news);
     }
 
     buildMessage(latest_news) {
@@ -107,3 +127,5 @@ class LatestNewsResult {
         this.page = page;
     }
 }
+
+main();

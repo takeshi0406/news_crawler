@@ -18,8 +18,11 @@
   "homepage": "https://github.com/takeshi0406/news_crawler#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "date-utils": "^1.2.21",
     "dotenv": "^8.0.0",
+    "ejs": "^2.6.2",
     "extract-domain": "^2.2.1",
+    "hatena-blog-api": "^1.0.0",
     "iconv-lite": "^0.4.24",
     "jschardet": "^2.1.0",
     "pdf-parse": "^1.1.1",

@@ -1,0 +1,10 @@
+<% news.forEach(item => { -%>
+<h3><i class="blogicon-check">×<%= item.popularity %></i></h3>
+<ul>
+<% item.entries.forEach(x => { -%>
+    <li>
+        <a href="<%= x.url %>" rel='nofollow'><%= x.title %></a>
+    </li>
+<% }); -%>
+</ul>
+<% }); -%>
