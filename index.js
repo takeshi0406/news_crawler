@@ -31,20 +31,6 @@ exports.executeNewsCrawler = (event, callback) => {
 };
 
 
-const main = () => {
-    const main = new MainProcess(
-        "本日のFintechニュース",
-        "takeshi0406/fintech",
-        31958529,
-        TWEET_COUNT,
-        "devs.hatenablog.com",
-        "takeshi0406");
-    main.exec().catch((error) => {
-        throw error;
-    });
-}
-
-
 class MainProcess {
     constructor(title, twlist, chatroom, tweet_count, blog_id, hatena_id) {
         this.twclient = new TwitterClient(
@@ -57,6 +43,7 @@ class MainProcess {
         this.title = title;
         this.tweet_count = tweet_count;
         [this.twuser, this.slug] = twlist.split("/");
+        if (!blog_id || !hatena_id) return;
         this.hbclient = new HatenaBlogClient(
             process.env.HATENA_TOKEN,
             process.env.HATENA_TOKEN_SECRET,
@@ -80,7 +67,10 @@ class MainProcess {
         });
  
         await this.cwclient.postMessages(this.buildMessage(latest_news));
-        await this.hbclient.postNews(`${this.today}の${this.title}`, latest_news);
+
+        if (this.hbclient) {
+            await this.hbclient.postNews(`${this.today}の${this.title}`, latest_news);
+        }
     }
 
     buildMessage(latest_news) {
@@ -127,5 +117,3 @@ class LatestNewsResult {
         this.page = page;
     }
 }
-
-main();
