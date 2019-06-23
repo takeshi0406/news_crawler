@@ -3,7 +3,7 @@
 const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter')
 const Crawler = require('./lib/crawler')
-const TWEET_COUNT = 20;
+const TWEET_COUNT = 200;
 require('dotenv').config();
 
 
@@ -15,7 +15,12 @@ require('dotenv').config();
  */
 exports.executeNewsCrawler = (event, callback) => {
     const opt = JSON.parse(Buffer.from(event.data, 'base64').toString());
-    const main = new MainProcess(opt.title, opt.twlist, opt.chatroom);
+    const main = new MainProcess(
+        opt.title,
+        opt.twlist,
+        opt.chatroom,
+        opt.tweet_count || TWEET_COUNT
+        );
     main.exec().catch((error) => {
         throw error;
     });
@@ -31,7 +36,7 @@ const main = () => {
 
 
 class MainProcess {
-    constructor(title, twlist, chatroom) {
+    constructor(title, twlist, chatroom, tweet_count) {
         this.twclient = new TwitterClient(
             process.env.TWITTER_CONSUMER_KEY,
             process.env.TWITTER_CONSUMER_SECRET,
@@ -40,12 +45,13 @@ class MainProcess {
         );
         this.cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, chatroom);
         this.title = title;
+        this.tweet_count = tweet_count;
         [this.twuser, this.slug] = twlist.split("/");
     }
 
     async exec() {
         const known_urls = await this.cwclient.getPostedUrls();
-        const news = (await this.twclient.getNews(this.twuser, this.slug, TWEET_COUNT)).filter((x) => {
+        const news = (await this.twclient.getNews(this.twuser, this.slug, this.tweet_count)).filter((x) => {
             return x.popularity >= 1 && !known_urls.has(x.url);
         });
         const results = await crawl(news);
