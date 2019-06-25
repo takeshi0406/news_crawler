@@ -117,3 +117,17 @@ class LatestNewsResult {
         this.page = page;
     }
 }
+
+
+const main = () => {
+    const main = new MainProcess(
+        "本日のFintechニュース",
+        "takeshi0406/fintech",
+        31958529,
+        TWEET_COUNT,
+        "devs.hatenablog.com",
+        "takeshi0406");
+    main.exec().catch((error) => {
+        throw error;
+    });
+}
