@@ -25,6 +25,7 @@
     "hatena-blog-api": "^1.0.0",
     "iconv-lite": "^0.4.24",
     "jschardet": "^2.1.0",
+    "log4js": "^4.4.0",
     "pdf-parse": "^1.1.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",

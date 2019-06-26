@@ -4,9 +4,14 @@ const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter');
 const Crawler = require('./lib/crawler');
 const HatenaBlogClient = require('./lib/posthatena');
+const log4js = require('log4js')
 require('date-utils');
 const TWEET_COUNT = 200;
 require('dotenv').config();
+
+
+const logger = log4js.getLogger();
+logger.level = 'error';
 
 
 /**
@@ -116,18 +121,4 @@ class LatestNewsResult {
         this.news = news;
         this.page = page;
     }
-}
-
-
-const main = () => {
-    const main = new MainProcess(
-        "本日のFintechニュース",
-        "takeshi0406/fintech",
-        31958529,
-        TWEET_COUNT,
-        "devs.hatenablog.com",
-        "takeshi0406");
-    main.exec().catch((error) => {
-        throw error;
-    });
 }
