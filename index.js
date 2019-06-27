@@ -11,7 +11,7 @@ require('dotenv').config();
 
 
 const logger = log4js.getLogger();
-logger.level = 'error';
+logger.level = 'info';
 
 
 /**
@@ -22,6 +22,7 @@ logger.level = 'error';
  */
 exports.executeNewsCrawler = (event, callback) => {
     const opt = JSON.parse(Buffer.from(event.data, 'base64').toString());
+    logger.info(`start ${opt.title}...`);
     const main = new MainProcess(
         opt.title,
         opt.twlist,
