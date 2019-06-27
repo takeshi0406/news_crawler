@@ -56,7 +56,7 @@ class MainProcess {
             process.env.HATENA_CONSUMER_SECRET,
             blog_id,
             hatena_id
-        ); // TODO
+        );
         this.today = (new Date()).toFormat("YYYY-MM-DD");
     }
 
