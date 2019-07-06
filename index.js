@@ -10,10 +10,6 @@ const TWEET_COUNT = 200;
 require('dotenv').config();
 
 
-const logger = log4js.getLogger();
-logger.level = 'info';
-
-
 /**
  * Background Cloud Function to be triggered by Pub/Sub.
  *
@@ -22,7 +18,7 @@ logger.level = 'info';
  */
 exports.executeNewsCrawler = (event, callback) => {
     const opt = JSON.parse(Buffer.from(event.data, 'base64').toString());
-    logger.info(`start ${opt.title}...`);
+    console.log(`start ${opt.title}...`);
     const main = new MainProcess(
         opt.title,
         opt.twlist,
@@ -83,7 +79,8 @@ class MainProcess {
         if (!latest_news.length) {
             return `[info][title]${this.title}[/title]ニュースがありません[/info]`
         }
-        const body = latest_news.sort((x, y) => {
+        // TODO:: ニュースの数をうまく制限する
+        const body = latest_news.slice(0, 25).sort((x, y) => {
             return y.news.popularity - x.news.popularity;
         }).map(x => {
             const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
