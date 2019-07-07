@@ -4,7 +4,6 @@ const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter');
 const Crawler = require('./lib/crawler');
 const HatenaBlogClient = require('./lib/posthatena');
-const log4js = require('log4js')
 require('date-utils');
 const TWEET_COUNT = 200;
 require('dotenv').config();
