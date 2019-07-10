@@ -13,5 +13,5 @@ describe("", () => {
             "blogId":"finnews.hatenablog.com"
         }));
         index.executeNewsCrawler(event, null);
-    });
+    }, 10 * 60 * 1000);
 });
