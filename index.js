@@ -15,7 +15,7 @@ require('dotenv').config();
  * @param {object} event The Cloud Functions event.
  * @param {function} callback The callback function.
  */
-exports.executeNewsCrawler = (event, callback) => {
+exports.executeNewsCrawler = async (event, callback) => {
     const opt = JSON.parse(Buffer.from(event.data, 'base64').toString());
     console.log(`start ${opt.title}...`);
     const main = new MainProcess(
@@ -26,9 +26,7 @@ exports.executeNewsCrawler = (event, callback) => {
         opt.blogId,
         opt.hatenaId
         );
-    main.exec().catch((error) => {
-        throw error;
-    });
+    await main.exec();
 };
 
 

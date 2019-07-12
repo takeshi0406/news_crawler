@@ -12,6 +12,8 @@ describe("", () => {
             "hatenaId": "takeshi0406",
             "blogId": "finnews.hatenablog.com"
         }));
-        index.executeNewsCrawler(event, null);
+        index.executeNewsCrawler(event, null).then(() => {
+            done();
+        });
     }, 10 * 60 * 1000);
 });
