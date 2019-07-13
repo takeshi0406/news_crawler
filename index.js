@@ -81,7 +81,7 @@ class MainProcess {
             return y.news.popularity - x.news.popularity;
         }).map(x => {
             const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
-            return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${x.page.redirected_url}`;
+            return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${encodeURI(x.page.redirected_url)}`;
         }).join("\n\n");
         return `[info][title]${this.title}[/title]${body}[/info]`
     }
