@@ -40,7 +40,7 @@ class MainProcess {
             process.env.TWITTER_TOKEN_SECRET
         );
         this.cwclient = new ChatWorkRoomManager(process.env.CHATWORK_TOKEN, chatroom);
-        this.title = title;
+        this.title = `${(new Date()).toFormat("YYYY-MM-DD")}の${title}`;
         this.tweet_count = tweet_count;
         [this.twuser, this.slug] = twlist.split("/");
         if (!blog_id || !hatena_id) return;
@@ -53,7 +53,6 @@ class MainProcess {
             hatena_id
         );
         this.draft = draft;
-        this.today = (new Date()).toFormat("YYYY-MM-DD");
     }
 
     async exec() {
@@ -64,13 +63,13 @@ class MainProcess {
         const results = await crawl(news);
         
         const latest_news = results.filter((res) => {
-            return !known_urls.has(res.page.redirected_url);
+            return !known_urls.has(encodeURI(res.page.redirected_url));
         });
  
         await this.cwclient.postMessages(this.buildMessage(latest_news));
 
         if (this.hbclient) {
-            await this.hbclient.postNews(`${this.today}の${this.title}`, latest_news, this.draft);
+            await this.hbclient.postNews(this.title, latest_news, this.draft);
         }
     }
 
