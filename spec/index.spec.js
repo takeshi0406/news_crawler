@@ -7,7 +7,7 @@ describe("", () => {
         const event = {};
         event.data = new Buffer(JSON.stringify({
             "title": "NewsCrawlerのテスト",
-            "twlist": "takeshi0406/fintech",
+            "twlist": "takeshi0406/fudosan",
             "chatroom": 31958529,
             "hatenaId": "takeshi0406",
             "blogId": "finnews.hatenablog.com"

@@ -5,7 +5,7 @@ const TwitterClient = require('./lib/twitter');
 const Crawler = require('./lib/crawler');
 const HatenaBlogClient = require('./lib/posthatena');
 require('date-utils');
-const TWEET_COUNT = 100;
+const TWEET_COUNT = 200;
 require('dotenv').config();
 
 
@@ -24,14 +24,15 @@ exports.executeNewsCrawler = async (event, callback) => {
         opt.chatroom,
         opt.tweet_count || TWEET_COUNT,
         opt.blogId,
-        opt.hatenaId
+        opt.hatenaId,
+        (typeof opt.draft === 'boolean') ? opt.draft : true
         );
     await main.exec();
 };
 
 
 class MainProcess {
-    constructor(title, twlist, chatroom, tweet_count, blog_id, hatena_id) {
+    constructor(title, twlist, chatroom, tweet_count, blog_id, hatena_id, draft) {
         this.twclient = new TwitterClient(
             process.env.TWITTER_CONSUMER_KEY,
             process.env.TWITTER_CONSUMER_SECRET,
@@ -51,6 +52,7 @@ class MainProcess {
             blog_id,
             hatena_id
         );
+        this.draft = draft;
         this.today = (new Date()).toFormat("YYYY-MM-DD");
     }
 
@@ -68,7 +70,7 @@ class MainProcess {
         await this.cwclient.postMessages(this.buildMessage(latest_news));
 
         if (this.hbclient) {
-            await this.hbclient.postNews(`${this.today}の${this.title}`, latest_news);
+            await this.hbclient.postNews(`${this.today}の${this.title}`, latest_news, this.draft);
         }
     }
 
