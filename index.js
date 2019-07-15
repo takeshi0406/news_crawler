@@ -5,7 +5,7 @@ const TwitterClient = require('./lib/twitter');
 const Crawler = require('./lib/crawler');
 const HatenaBlogClient = require('./lib/posthatena');
 require('date-utils');
-const TWEET_COUNT = 200;
+const TWEET_COUNT = 500;
 require('dotenv').config();
 
 
