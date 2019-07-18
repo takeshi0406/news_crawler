@@ -17,4 +17,11 @@ describe("正常系のテスト", () => {
             done();
         });
     });
+
+    it("タイトルがきちんとパースできること", (done) => {
+        fetchPage("https://japanese.engadget.com/2019/07/16/macbook-air-2019-ssd/").then(response => {
+            expect(response.title).toEqual("MacBook Air(2019)のSSD、前年モデルより低速？ベンチマーク結果が公開 - Engadget 日本版");
+            done();
+        });
+    });
 });
