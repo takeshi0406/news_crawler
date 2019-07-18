@@ -17,11 +17,4 @@ describe("正常系のテスト", () => {
             done();
         });
     });
-
-    it("pdfをパースできること", (done) => {
-        fetchPage("https://netsugi.jp/img/info190601.pdf").then(response => {
-            expect(response.title).toEqual("");
-            done();
-        });
-    });
 });

@@ -3,7 +3,6 @@ const index = rewire('../index');
 
 
 describe("", () => {
-    return;
     it("", (done) => {
         const event = {};
         event.data = new Buffer(JSON.stringify({
