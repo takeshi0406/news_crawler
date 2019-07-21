@@ -33,6 +33,13 @@ describe('urlUtilsのテスト', () => {
     });
   });
 
+  describe('AmazonのURLで-が含まれるとき', () => {
+    it('問題なく正規化できること', () => {
+      const url = "https://www.amazon.co.jp/%E3%81%8A%E3%82%AB%E3%83%8D%E3%81%AE%E6%95%99%E5%AE%A4-%E5%83%95%E3%82%89%E3%81%8C%E3%81%8A%E3%81%8B%E3%81%97%E3%81%AA%E3%82%AF%E3%83%A9%E3%83%96%E3%81%A7%E5%AD%A6%E3%82%93%E3%81%A0%E7%A7%98%E5%AF%86-%E3%81%97%E3%81%94%E3%81%A8%E3%81%AE%E3%82%8F-%E9%AB%98%E4%BA%95-%E6%B5%A9%E7%AB%A0-ebook/dp/B07BHM3MMW";
+      expect(UrlUtils.regularize(url)).toEqual("https://www.amazon.co.jp/dp/B07BHM3MMW?tag=take1103-22");
+    });
+  });
+
   describe("はてなブックマークのとき", () => {
     it("元のページを表示すること", () => {
       expect(UrlUtils.regularize("https://b.hatena.ne.jp/entry/s/www.hellocybernetics.tech/entry/2019/07/18/222317")).toEqual("https://www.hellocybernetics.tech/entry/2019/07/18/222317");
