@@ -24,4 +24,11 @@ describe("正常系のテスト", () => {
             done();
         });
     });
+
+    it("pdfの場合", (done) => {
+        fetchPage("www.reins.or.jp/pdf/trend/rt/rt_201907_3.pdf").then(response => {
+            expect(response.title).toEqual("首都圏中古マンション・中古戸建住宅 長期動向グラフ - 東日本不動産流通 ...");
+            done();
+        });
+    });
 });
