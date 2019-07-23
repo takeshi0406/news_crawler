@@ -4,15 +4,15 @@ const UrlUtils = require('../../lib/urlutils');
 describe('urlUtilsのテスト', () => {
   describe('パラメータがURLについていないとき', () => {
     it('URLをそのまま返すこと', () => {
-        const google_url = "https://google.com";
-        expect(UrlUtils.regularize(google_url)).toEqual(google_url);
+      const google_url = "https://google.com";
+      expect(UrlUtils.regularize(google_url)).toEqual(google_url);
     });
   });
 
   describe('パラメータがURLについているとき', () => {
-      it('取り除いて返すこと', ()=> {
-          expect(UrlUtils.regularize("https://google.com?a=b&utm_source=test")).toEqual("https://google.com?a=b");
-      });
+    it('取り除いて返すこと', ()=> {
+      expect(UrlUtils.regularize("https://google.com?a=b&utm_source=test")).toEqual("https://google.com?a=b");
+    });
   });
 
   describe('amazonのURLのとき', () => {
