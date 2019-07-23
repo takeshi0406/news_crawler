@@ -45,6 +45,13 @@ describe("正常系のテスト", () => {
         });
     });
 
+    it("クローリングできないURLのとき", (done) => {
+        fetchPage("https://comemo.nikkei.com/n/n349836ee7a54").then(response => {
+            expect(response.title).toBeNull();
+            done()
+        });
+    });
+
     xit("pdfの場合", (done) => {
         fetchPage("https://arxiv.org/pdf/1707.04020.pdf").then(response => {
             expect(response.title).toEqual("");
