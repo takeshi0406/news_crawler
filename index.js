@@ -78,9 +78,9 @@ class MainProcess {
             return `[info][title]${this.title}[/title]ニュースがありません[/info]`
         }
         // TODO:: ニュースの数をうまく制限する
-        const body = latest_news.slice(0, 25).sort((x, y) => {
+        const body = latest_news.sort((x, y) => {
             return y.news.popularity - x.news.popularity;
-        }).map(x => {
+        }).slice(0, 25).map(x => {
             const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
             return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${encodeURI(x.page.redirected_url)}`;
         }).join("\n\n");

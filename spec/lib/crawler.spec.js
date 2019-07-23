@@ -45,7 +45,7 @@ describe("正常系のテスト", () => {
         });
     });
 
-    it("pdfの場合", (done) => {
+    xit("pdfの場合", (done) => {
         fetchPage("https://arxiv.org/pdf/1707.04020.pdf").then(response => {
             expect(response.title).toEqual("");
             done();
