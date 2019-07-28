@@ -45,7 +45,7 @@ describe("正常系のテスト", () => {
         });
     });
 
-    it("クローリングできないURLのとき", (done) => {
+    xit("クローリングできないURLのとき", (done) => {
         fetchPage("https://comemo.nikkei.com/n/n349836ee7a54").then(response => {
             expect(response.title).toBeNull();
             done()
