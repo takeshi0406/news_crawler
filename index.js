@@ -4,9 +4,16 @@ const ChatWorkRoomManager = require('./lib/chatwork');
 const TwitterClient = require('./lib/twitter');
 const Crawler = require('./lib/crawler');
 const HatenaBlogClient = require('./lib/posthatena');
+const UrlUtils = require('./lib/urlutils');
 require('date-utils');
 const TWEET_COUNT = 500;
 require('dotenv').config();
+const IGNORE_DOMAINS = [
+    "hobbyistnews.hatenablog.com",
+    "www.instagram.com",
+    "peing.net",
+    "twilog.org"
+];
 
 
 /**
@@ -56,14 +63,15 @@ class MainProcess {
     }
 
     async exec() {
-        const known_urls = await this.cwclient.getPostedUrls();
+        const knownUrls = await this.cwclient.getPostedUrls();
+        const ignoreDomains = new UrlUtils.IgnoreDomains(IGNORE_DOMAINS);
         const news = (await this.twclient.getNews(this.twuser, this.slug, this.tweet_count)).filter((x) => {
-            return x.popularity >= 1 && !known_urls.has(x.url);
+            return x.popularity >= 1 && !knownUrls.has(x.url);
         });
         const results = await crawl(news);
         
         const latest_news = results.filter((res) => {
-            return !known_urls.has(encodeURI(res.page.redirected_url));
+            return !knownUrls.has(encodeURI(res.page.redirected_url)) || ignoreDomains.has(res.page.redirected_url);
         });
  
         await this.cwclient.postMessages(this.buildMessage(latest_news));

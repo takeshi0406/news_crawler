@@ -2,7 +2,7 @@ const rewire = require('rewire');
 const index = rewire('../index');
 
 
-xdescribe("クローリングのテスト", () => {
+describe("クローリングのテスト", () => {
     it("エラーが起きないこと", (done) => {
         const event = {};
         event.data = new Buffer(JSON.stringify({
