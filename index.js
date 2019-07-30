@@ -71,7 +71,7 @@ class MainProcess {
         const results = await crawl(news);
         
         const latest_news = results.filter((res) => {
-            return !(knownUrls.has(encodeURI(res.page.redirected_url)) || ignoreDomains.has(res.page.redirected_url));
+            return !(knownUrls.has(UrlUtils.encode(res.page.redirected_url)) || ignoreDomains.has(res.page.redirected_url));
         });
  
         await this.cwclient.postMessages(this.buildMessage(latest_news));
@@ -90,7 +90,7 @@ class MainProcess {
             return y.news.popularity - x.news.popularity;
         }).slice(0, 25).map(x => {
             const stars = x.news.popularity >= 10 ? `(*)×${x.news.popularity}` : "(*)".repeat(x.news.popularity);
-            return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${encodeURI(x.page.redirected_url)}`;
+            return `${stars}\n${x.page.title || "[タイトルが取得できませんでした]"}\n${UrlUtils.encode(x.page.redirected_url)}`;
         }).join("\n\n");
         return `[info][title]${this.title}[/title]${body}[/info]`
     }

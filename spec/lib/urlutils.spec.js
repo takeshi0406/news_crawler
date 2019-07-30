@@ -55,3 +55,18 @@ describe("IgnoreDomainsのテスト", () => {
     expect(instance.has("https://google.com")).toBeFalsy();
   })
 });
+
+
+describe("encodeのテスト", () => {
+  it("asciiのみのURLのとき", () => {
+    expect(UrlUtils.encode("https://google.com")).toEqual("https://google.com");
+  });
+
+  it("すでにencodeされているとき", () => {
+    expect(UrlUtils.encode("https://dic.nicovideo.jp/a/%E8%B5%A4%E6%9C%A8%E3%83%AA%E3%83%84%E3%82%B3")).toEqual("https://dic.nicovideo.jp/a/%E8%B5%A4%E6%9C%A8%E3%83%AA%E3%83%84%E3%82%B3");
+  });
+
+  it("日本語URLのとき", () => {
+    expect(UrlUtils.encode("https://dic.nicovideo.jp/a/赤木リツコ")).toEqual("https://dic.nicovideo.jp/a/%E8%B5%A4%E6%9C%A8%E3%83%AA%E3%83%84%E3%82%B3");
+  });
+});
