@@ -71,7 +71,7 @@ class MainProcess {
         const results = await crawl(news);
         
         const latest_news = results.filter((res) => {
-            return !knownUrls.has(encodeURI(res.page.redirected_url)) || ignoreDomains.has(res.page.redirected_url);
+            return !(knownUrls.has(encodeURI(res.page.redirected_url)) || ignoreDomains.has(res.page.redirected_url));
         });
  
         await this.cwclient.postMessages(this.buildMessage(latest_news));

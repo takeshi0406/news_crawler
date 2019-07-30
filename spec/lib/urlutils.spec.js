@@ -46,3 +46,12 @@ describe('urlUtilsのテスト', () => {
     });
   });
 });
+
+
+describe("IgnoreDomainsのテスト", () => {
+  it("指定したドメインでtrueを返すこと", () => {
+    const instance = new UrlUtils.IgnoreDomains(['hobbyistnews.hatenablog.com']);
+    expect(instance.has("https://hobbyistnews.hatenablog.com/entry/2019/07/27/172620")).toBeTruthy();
+    expect(instance.has("https://google.com")).toBeFalsy();
+  })
+});
