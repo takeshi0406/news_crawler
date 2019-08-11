@@ -10,6 +10,7 @@ const TWEET_COUNT = 500;
 require('dotenv').config();
 const IGNORE_DOMAINS = [
     "hobbyistnews.hatenablog.com",
+    "seculog.hatenablog.com",
     "www.instagram.com",
     "peing.net",
     "twilog.org"
