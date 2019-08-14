@@ -11,6 +11,11 @@ require('dotenv').config();
 const IGNORE_DOMAINS = [
     "hobbyistnews.hatenablog.com",
     "seculog.hatenablog.com",
+    "devs.hatenablog.com",
+    "finnews.hatenablog.com",
+    "fudosaninfo.hatenablog.com",
+    "7news.hatenablog.com",
+    "webacqs.hatenablog.com",
     "www.instagram.com",
     "peing.net",
     "twilog.org"
