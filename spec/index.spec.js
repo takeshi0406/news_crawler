@@ -7,7 +7,7 @@ xdescribe("クローリングのテスト", () => {
         const event = {};
         event.data = new Buffer(JSON.stringify({
             "title": "NewsCrawlerのテスト",
-            "twlist": "takeshi0406/den",
+            "twlist": "takeshi0406/tokei",
             "chatroom": 31958529,
             "hatenaId": "takeshi0406",
             "blogId": "finnews.hatenablog.com"
