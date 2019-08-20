@@ -18,7 +18,8 @@ const IGNORE_DOMAINS = [
     "webacqs.hatenablog.com",
     "www.instagram.com",
     "peing.net",
-    "twilog.org"
+    "twilog.org",
+    "marshmallow-qa.com"
 ];
 
 
